@@ -1,0 +1,7 @@
+*.pyc
+
+/dist
+*.eggs
+*.egg-info
+.cache
+.tox
