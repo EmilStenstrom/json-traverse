@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 import re
 import json
 
-class JsonMultiParser:
+class JsonTraverseParser:
     def __init__(self, raw_data):
         if raw_data and not isinstance(raw_data, "".__class__):
             raise TypeError("the 'raw_data' argument must be {}, not '{}'".format("".__class__, type(raw_data)))
