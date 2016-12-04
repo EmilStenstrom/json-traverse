@@ -25,22 +25,28 @@ class JsonTraverseParser:
                     list_reduced = self.reduce_list(reduced, item)
 
                 dict_reduced = self.flatten(reduced)
-                if list_reduced == reduced:
+                if not list_reduced or list_reduced == reduced:
                     dict_reduced = self.reduce_dict(dict_reduced, item)
 
-                if list_reduced != reduced:
+                if list_reduced and list_reduced != reduced:
+                    print("item: {}, LIST, list_reduced: {}, reduced: {}".format(item, list_reduced, reduced))
                     reduced = list_reduced
-                elif dict_reduced != self.flatten(reduced):
+                elif dict_reduced and dict_reduced != self.flatten(reduced):
+                    print("item: {}, DICT, dict_reduced: {}, reduced: {}".format(item, dict_reduced, reduced))
                     reduced = dict_reduced
                 else:
-                    break
+                    print("item: {}, MISS".format(item))
+                    reduced = []
+
+        print("INTERM RESULT: {}".format(reduced))
 
         if isinstance(reduced, list) and len(reduced) == 1:
             reduced = reduced[0]
 
         if isinstance(reduced, list) and len(reduced) == 0:
-            reduced = ''
+            reduced = None
 
+        print("FINAL RESULT: {}".format(reduced))
         return reduced
 
     def reduce_list(self, reduced, item):
@@ -50,7 +56,7 @@ class JsonTraverseParser:
             try:
                 outputs.append(value[int(item)])
             except (ValueError, IndexError, KeyError, TypeError):
-                outputs.append(value)
+                pass
 
         return outputs
 
@@ -61,7 +67,7 @@ class JsonTraverseParser:
             try:
                 outputs.append(value[item])
             except (KeyError, TypeError):
-                outputs.append(value)
+                pass
 
         return outputs
 

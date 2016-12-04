@@ -68,7 +68,7 @@ See the [tests](tests/test_parsing.py) for more examples.
 3. Each item in the path is first checked to see if it's an array index. If it is, the data is treated as a list and only the data matching the index is returned.
 4. If it's not an index, it's treated as a dict key instead. The data is treated as an dict and only the data inside the specified key is returned.
 5. If you specified a dict key, but the data is a list, the result is split into as many parts as there are items in the list, and the key is searched for in each part.
-6. If at any time an invalid item is tried, searching stops and the result so far is returned.
+6. If at any time an invalid item is tried, searching stops and a None result is returned.
 
 See the [parser code](jsontraverse/parser.py) for more details.
 

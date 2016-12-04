@@ -8,13 +8,13 @@ str = "".__class__
 class JsonTraverseParserTest(unittest.TestCase):
     def test_empty_data(self):
         parser = JsonTraverseParser('')
-        self.assertEqual(parser.traverse(''), '')
+        self.assertEqual(parser.traverse(''), None)
 
     def test_empty_data_invalid(self):
         parser = JsonTraverseParser('')
-        self.assertEqual(parser.traverse('0'), '')
-        self.assertEqual(parser.traverse('1'), '')
-        self.assertEqual(parser.traverse('a'), '')
+        self.assertEqual(parser.traverse('0'), None)
+        self.assertEqual(parser.traverse('1'), None)
+        self.assertEqual(parser.traverse('a'), None)
 
     def test_list_data(self):
         parser = JsonTraverseParser('[1]')
@@ -23,12 +23,11 @@ class JsonTraverseParserTest(unittest.TestCase):
 
     def test_list_data_invalid(self):
         parser = JsonTraverseParser('[1]')
-        self.assertEqual(parser.traverse('a'), [1])
-        self.assertEqual(parser.traverse('a.0'), [1])
-        self.assertEqual(parser.traverse('1'), [1])
-        self.assertEqual(parser.traverse('1.a'), [1])
-        self.assertEqual(parser.traverse('0'), 1)
-        self.assertEqual(parser.traverse('0.a'), 1)
+        self.assertEqual(parser.traverse('a'), None)
+        self.assertEqual(parser.traverse('a.0'), None)
+        self.assertEqual(parser.traverse('1'), None)
+        self.assertEqual(parser.traverse('1.a'), None)
+        self.assertEqual(parser.traverse('0.a'), None)
 
     def test_dict_data(self):
         parser = JsonTraverseParser('{"a": 1}')
@@ -37,10 +36,10 @@ class JsonTraverseParserTest(unittest.TestCase):
 
     def test_dict_data_invalid(self):
         parser = JsonTraverseParser('{"a": 1}')
-        self.assertEqual(parser.traverse('0'), {"a": 1})
-        self.assertEqual(parser.traverse('b'), {"a": 1})
-        self.assertEqual(parser.traverse('a.a'), 1)
-        self.assertEqual(parser.traverse('a.0'), 1)
+        self.assertEqual(parser.traverse('0'), None)
+        self.assertEqual(parser.traverse('b'), None)
+        self.assertEqual(parser.traverse('a.a'), None)
+        self.assertEqual(parser.traverse('a.0'), None)
 
     def test_dict_list_data(self):
         parser = JsonTraverseParser('{"a": [0, 1]}')
@@ -50,10 +49,10 @@ class JsonTraverseParserTest(unittest.TestCase):
 
     def test_dict_list_data_invalid(self):
         parser = JsonTraverseParser('{"a": [0, 1]}')
-        self.assertEqual(parser.traverse('b'), {"a": [0, 1]})
-        self.assertEqual(parser.traverse('b.0'), {"a": [0, 1]})
-        self.assertEqual(parser.traverse('0'), {"a": [0, 1]})
-        self.assertEqual(parser.traverse('a.2'), [0, 1])
+        self.assertEqual(parser.traverse('b'), None)
+        self.assertEqual(parser.traverse('b.0'), None)
+        self.assertEqual(parser.traverse('0'), None)
+        self.assertEqual(parser.traverse('a.2'), None)
 
     def test_list_dict_data(self):
         parser = JsonTraverseParser('[{"a": 0}, {"b": 1}]')
@@ -61,12 +60,12 @@ class JsonTraverseParserTest(unittest.TestCase):
         self.assertEqual(parser.traverse('0.a'), 0)
         self.assertEqual(parser.traverse('1'), {"b": 1})
         self.assertEqual(parser.traverse('1.b'), 1)
+        self.assertEqual(parser.traverse('a'), 0)
 
     def test_list_dict_data_invalid(self):
         parser = JsonTraverseParser('[{"a": 0}, {"b": 1}]')
-        self.assertEqual(parser.traverse('a'), [0, {"b": 1}])
-        self.assertEqual(parser.traverse('a.0'), [0, {"b": 1}])
-        self.assertEqual(parser.traverse('2'), [{"a": 0}, {"b": 1}])
+        self.assertEqual(parser.traverse('a.0'), None)
+        self.assertEqual(parser.traverse('2'), None)
 
     def test_string_data(self):
         parser = JsonTraverseParser('"hello world"')
@@ -82,7 +81,7 @@ class JsonTraverseParserTest(unittest.TestCase):
             parser.traverse(None)
 
         parser = JsonTraverseParser(None)
-        self.assertEqual(parser.traverse(''), '')
+        self.assertEqual(parser.traverse(''), None)
         with self.assertRaises(TypeError):
             parser.traverse(None)
 
@@ -111,22 +110,22 @@ class JsonTraverseParserTest(unittest.TestCase):
         self.assertEqual(parser.traverse('a.b.c'), [0, 1, 2])
 
         parser = JsonTraverseParser('[{"a": 0}, {"a": {"b": 1}}]')
-        self.assertEqual(parser.traverse('a.b'), [0, 1])
+        self.assertEqual(parser.traverse('a.b'), 1)
 
     def test_string_and_digit_keys_invalid(self):
         parser = JsonTraverseParser('[{"a": 0}]')
-        self.assertEqual(parser.traverse('a0.0'), [{"a": 0}])
-        self.assertEqual(parser.traverse('0a.a'), [{"a": 0}])
-        self.assertEqual(parser.traverse('0.a0'), {"a": 0})
-        self.assertEqual(parser.traverse('0.0a'), {"a": 0})
-        self.assertEqual(parser.traverse('A'), [{"a": 0}])
+        self.assertEqual(parser.traverse('a0.0'), None)
+        self.assertEqual(parser.traverse('0a.a'), None)
+        self.assertEqual(parser.traverse('0.a0'), None)
+        self.assertEqual(parser.traverse('0.0a'), None)
+        self.assertEqual(parser.traverse('A'), None)
 
     def test_unstandard_digit_keys_invalid(self):
         parser = JsonTraverseParser('[{"a": 0}]')
-        self.assertEqual(parser.traverse('00.0'), [{"a": 0}])
-        self.assertEqual(parser.traverse('01.0'), [{"a": 0}])
-        self.assertEqual(parser.traverse('0001.0'), [{"a": 0}])
-        self.assertEqual(parser.traverse('-1.0'), [{"a": 0}])
+        self.assertEqual(parser.traverse('00.0'), None)
+        self.assertEqual(parser.traverse('01.0'), None)
+        self.assertEqual(parser.traverse('0001.0'), None)
+        self.assertEqual(parser.traverse('-1.0'), None)
 
     def test_digit_keys_in_dict(self):
         parser = JsonTraverseParser('[{"0": 0}]')
