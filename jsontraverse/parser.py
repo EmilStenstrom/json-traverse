@@ -29,16 +29,12 @@ class JsonTraverseParser:
                     dict_reduced = self.reduce_dict(dict_reduced, item)
 
                 if list_reduced and list_reduced != reduced:
-                    print("item: {}, LIST, list_reduced: {}, reduced: {}".format(item, list_reduced, reduced))
                     reduced = list_reduced
                 elif dict_reduced and dict_reduced != self.flatten(reduced):
-                    print("item: {}, DICT, dict_reduced: {}, reduced: {}".format(item, dict_reduced, reduced))
                     reduced = dict_reduced
                 else:
-                    print("item: {}, MISS".format(item))
                     reduced = []
 
-        print("INTERM RESULT: {}".format(reduced))
 
         if isinstance(reduced, list) and len(reduced) == 1:
             reduced = reduced[0]
@@ -46,7 +42,6 @@ class JsonTraverseParser:
         if isinstance(reduced, list) and len(reduced) == 0:
             reduced = None
 
-        print("FINAL RESULT: {}".format(reduced))
         return reduced
 
     def reduce_list(self, reduced, item):
