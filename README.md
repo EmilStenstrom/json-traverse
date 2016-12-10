@@ -1,5 +1,5 @@
 # json-traverse
-Query complex JSON structures using a simple query syntax.
+Parse complex JSON structures using a simple query syntax.
 
 ## Why should you use json-traverse?
 
