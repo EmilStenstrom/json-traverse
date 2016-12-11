@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from setuptools import setup
 
-VERSION = '0.2.1'
+VERSION = '0.3'
 PKG_NAME = 'json-traverse'
 
 setup(
