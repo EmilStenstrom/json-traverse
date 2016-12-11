@@ -35,7 +35,6 @@ class JsonTraverseParser:
                 else:
                     reduced = []
 
-
         if isinstance(reduced, list) and len(reduced) == 1:
             reduced = reduced[0]
 
