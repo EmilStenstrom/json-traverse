@@ -2,17 +2,20 @@ from __future__ import unicode_literals
 import re
 import json
 
+# This ensures that we use 'str' in Python 3, and 'unicode' in Python 2
+PythonString = "".__class__
+
 class JsonTraverseParser:
     def __init__(self, raw_data, custom_json_impl=None):
-        if raw_data and not isinstance(raw_data, "".__class__):
-            raise TypeError("the 'raw_data' argument must be {}, not '{}'".format("".__class__, type(raw_data)))
+        if raw_data and not isinstance(raw_data, PythonString):
+            raise TypeError("the 'raw_data' argument must be {}, not '{}'".format(PythonString, type(raw_data)))
 
         json_impl = custom_json_impl or json
         self.data = json_impl.loads(raw_data) if raw_data else None
 
-    def traverse(self, path):
-        if not isinstance(path, "".__class__):
-            raise TypeError("the 'path' argument must be {}, not '{}'".format("".__class__, type(path)))
+    def traverse(self, path, force_list=False):
+        if not isinstance(path, PythonString):
+            raise TypeError("the 'path' argument must be {}, not '{}'".format(PythonString, type(path)))
 
         reduced = []
 
