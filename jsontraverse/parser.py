@@ -45,6 +45,12 @@ class JsonTraverseParser:
         if isinstance(reduced, list) and len(reduced) == 0:
             reduced = None
 
+        if force_list and not isinstance(reduced, list):
+            if reduced is None:
+                reduced = []
+            else:
+                reduced = [reduced]
+
         return reduced
 
     def reduce_list(self, reduced, item):
